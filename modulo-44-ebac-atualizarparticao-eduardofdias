@@ -1,0 +1,25 @@
+import boto3
+
+def lambda_handler(event, context):
+    database_name = 'default'
+    table_name = 'telegram'
+
+    # Criar um cliente do Athena
+    athena_client = boto3.client('athena')
+
+    # Execute o comando MSCK REPAIR TABLE
+    query = f"MSCK REPAIR TABLE {table_name}"
+    response = athena_client.start_query_execution(
+        QueryString=query,
+        QueryExecutionContext={'Database': database_name},
+        ResultConfiguration={'OutputLocation': 's3://ebac-eduardofdias-query-results/'}
+    )
+
+    # Exiba a resposta (pode conter informações úteis ou erros)
+    print(response)
+
+    # Retorne uma resposta adequada para a Lambda (opcional)
+    return {
+        'statusCode': 200,
+        'body': 'Comando MSCK REPAIR TABLE iniciado com sucesso!'
+    }

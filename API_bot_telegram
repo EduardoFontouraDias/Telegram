@@ -1,0 +1,15 @@
+#Utilização a API de bots do Telegram.
+
+from getpass import getpass
+import json
+import requests
+
+token = getpass()
+
+base_url = f'https://api.telegram.org/bot{token}'
+
+response = requests.get(url=f'{base_url}/getMe')
+print(f'{base_url}/getMe')
+
+print(json.dumps(json.loads(response.text), indent=2))
+
